@@ -1,7 +1,6 @@
 import Redis from '@ioc:Adonis/Addons/Redis'
 import axios from 'axios'
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import * as console from "console";
 
 export default class WeathersController {
   static async getForecastById({ request, response }: HttpContextContract) {
@@ -20,6 +19,7 @@ export default class WeathersController {
         data = JSON.parse(cachedForecast)
       } else {
         const url = `${process.env.WEATHER_URL}?id=${city.id}&APPID=${process.env.WEATHER_API_KEY}`
+
         const headers = {
           'Content-Type': 'application/json',
         }
@@ -32,7 +32,7 @@ export default class WeathersController {
           temperature_min: (forecast.main.temp_min - 273.15).toFixed(1),
           humid: forecast.main.humidity,
           press: forecast.main.pressure,
-          sea: forecast.main.sea_level,
+          sea: (forecast.main.sea_level * 0.001).toFixed(2),
           visibility: forecast.visibility,
           windSpeed: (forecast.wind.speed * 3.6).toFixed(1),
           dateTime: forecast.dt_txt,
