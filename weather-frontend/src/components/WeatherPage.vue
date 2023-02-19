@@ -37,7 +37,7 @@
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-xl font-bold text-sky-900">{{ selected.name}}</h1>
-          <p class="mt-2 text-sm font-semibold text-sky-900">Weather Forecast for the day 16th February, last update at 17:00.</p>
+          <p class="mt-2 text-sm font-semibold text-sky-900">Weather Forecast for the day {{ forecast.dt }}.</p>
         </div>
       </div>
       <div class="-mx-6 mt-8 sm:-mx-0">
@@ -45,35 +45,35 @@
           <tbody class="divide-y divide-gray-200 bg-white">
           <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Temperature</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">ºC</td>
+            <td class="hidden pl-40 py-4 text-sm text-sky-900 lg:table-cell"> {{ forecast.temperature }} ºC</td>
           </tr>
           <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Maximum Temperature</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">ºC</td>
+            <td class="hidden pl-40 py-4 text-sm text-sky-900 lg:table-cell"> {{ forecast.temperature_max }}ºC</td>
           </tr>
           <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Minimum Temperature</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">ºC</td>
+            <td class="hidden pl-40 py-4 text-sm text-sky-900 lg:table-cell"> {{ forecast.temperature_min }}ºC</td>
           </tr>
           <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Humidity</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">%</td>
+            <td class="hidden pl-40 py-4 text-sm text-sky-900 lg:table-cell"> {{ forecast.humidity }} %</td>
           </tr>
           <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Atmospheric pressure</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">hPa</td>
+            <td class="hidden pl-40 py-4 text-sm text-sky-900 lg:table-cell"> {{ forecast.pressure }} hPa</td>
           </tr>
           <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Sea Level</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">m</td>
+            <td class="hidden pl-40 py-4 text-sm text-sky-900 lg:table-cell"> {{ forecast.sea_level }} m</td>
           </tr>
           <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Visibility</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">km</td>
+            <td class="hidden pl-40 py-4 text-sm text-sky-900 lg:table-cell"> {{ forecast.visibility }} km</td>
           </tr>
           <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Wind</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">m/s</td>
+            <td class="hidden pl-40 py-4 text-sm text-sky-900 lg:table-cell"> {{ forecast.windSpeed }} m/s</td>
           </tr>
           </tbody>
         </table>
@@ -82,21 +82,41 @@
   </div>
 </template>
 
-
 <script setup>
-import { ref } from 'vue'
-import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+  import {ref, watch} from 'vue'
+  import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
+  import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+  import axios from "axios";
 
-const cities = [
-  {id:'2267056', name: 'Lisboa'},
-  {id:'2267094', name: 'Leiria'},
-  {id:'2740636', name: 'Coimbra'},
-  {id:'2735941', name: 'Porto'},
-  {id:'2268337', name: 'Faro'},
-]
+  const cities = [
+    {id:'2267056', name: 'Lisboa'},
+    {id:'2267094', name: 'Leiria'},
+    {id:'2740636', name: 'Coimbra'},
+    {id:'2735941', name: 'Porto'},
+    {id:'2268337', name: 'Faro'},
+  ]
 
-const selected = ref(cities[1])
+  const selected = ref(cities[1])
+  const forecast = ref({
+    temperature: '',
+    temperature_max: '',
+    temperature_min: '',
+    humidity: '',
+    pressure: '',
+    sea_level: '',
+    visibility: '',
+    windSpeed: '',
+    dt: ''
+  })
 
+  watch(() => selected.value, async (newVal) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:3333/api/forecast/${newVal.id}`);
+      forecast.value = response.data[0];
+      console.log(forecast.value)
+    } catch (error) {
+      console.error(error);
+    }
+  }, { immediate: true })
 
 </script>

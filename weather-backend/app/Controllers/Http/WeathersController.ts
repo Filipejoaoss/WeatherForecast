@@ -30,12 +30,12 @@ export default class WeathersController {
           temperature: (forecast.main.temp - 273.15).toFixed(1),
           temperature_max: (forecast.main.temp_max - 273.15).toFixed(1),
           temperature_min: (forecast.main.temp_min - 273.15).toFixed(1),
-          humid: forecast.main.humidity,
-          press: forecast.main.pressure,
-          sea: (forecast.main.sea_level * 0.001).toFixed(2),
-          visibility: forecast.visibility,
+          humidity: forecast.main.humidity,
+          pressure: forecast.main.pressure,
+          sea_level: (forecast.main.sea_level * 0.001).toFixed(2),
+          visibility: (forecast.visibility * 0.001).toFixed(1),
           windSpeed: (forecast.wind.speed * 3.6).toFixed(1),
-          dateTime: forecast.dt_txt,
+          dt: forecast.dt_txt,
         }));
 
         await redisClient.set(JSON.stringify(city), JSON.stringify(forecasts));
