@@ -44,24 +44,36 @@
         <table class="min-w-full divide-y divide-gray-300">
           <tbody class="divide-y divide-gray-200 bg-white">
           <tr>
-            <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Wind</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">m/s</td>
+            <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Temperature</td>
+            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">ºC</td>
           </tr>
           <tr>
-            <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Atmospheric pressure</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">hPa</td>
+            <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Maximum Temperature</td>
+            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">ºC</td>
+          </tr>
+          <tr>
+            <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Minimum Temperature</td>
+            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">ºC</td>
           </tr>
           <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Humidity</td>
             <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">%</td>
           </tr>
           <tr>
+            <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Atmospheric pressure</td>
+            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">hPa</td>
+          </tr>
+          <tr>
+            <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Sea Level</td>
+            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">m</td>
+          </tr>
+          <tr>
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Visibility</td>
             <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">km</td>
           </tr>
           <tr>
-            <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Dew Point</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell"> ºC</td>
+            <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">Wind</td>
+            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">m/s</td>
           </tr>
           </tbody>
         </table>
