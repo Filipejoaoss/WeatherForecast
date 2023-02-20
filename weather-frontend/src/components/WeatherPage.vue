@@ -37,7 +37,7 @@
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-xl font-bold text-sky-900">{{ selected.name}}</h1>
-          <p class="mt-2 text-sm font-semibold text-sky-900">Weather Forecast for the day {{ forecast.dt }}.</p>
+          <p class="mt-2 text-sm font-semibold text-sky-900">Weather Forecast {{ formattedDateTime }}.</p>
         </div>
       </div>
       <div class="-mx-6 mt-8 sm:-mx-0">
@@ -83,7 +83,7 @@
 </template>
 
 <script setup>
-  import {ref, watch} from 'vue'
+import {computed, ref, watch} from 'vue'
   import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
   import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
   import axios from "axios";
@@ -97,6 +97,25 @@
   ]
 
   const selected = ref(cities[1])
+
+  const currentTime = ref(new Date())
+
+  setInterval(() => {
+    currentTime.value = new Date();
+  }, 30 * 60 * 1000); // update every 30 minutes
+
+  const formattedDateTime = computed(() => {
+    const options = {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false,
+    }
+    return currentTime.value.toLocaleString('en-US', options)
+  })
+
   const forecast = ref({
     temperature: '',
     temperature_max: '',
@@ -113,10 +132,8 @@
     try {
       const response = await axios.get(`http://127.0.0.1:3333/api/forecast/${newVal.id}`);
       forecast.value = response.data[0];
-      console.log(forecast.value)
     } catch (error) {
       console.error(error);
     }
   }, { immediate: true })
-
 </script>
