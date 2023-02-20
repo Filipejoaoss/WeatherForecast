@@ -15,13 +15,13 @@
           <thead>
           <tr>
             <th scope="col" class="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-sky-900 sm:pl-0">City</th>
-            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-sky-900 lg:table-cell">Temperature</th>
+            <th scope="col" class="hidden pl-36 py-3.5 text-left text-sm font-semibold text-sky-900 lg:table-cell">Temperature</th>
           </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
           <tr v-for="city in cities" :key="city.id">
             <td class="w-full max-w-0 py-4 pl-6 pr-3 text-sm font-medium text-sky-900 sm:w-auto sm:max-w-none sm:pl-0">{{ city.name }}</td>
-            <td class="hidden px-3 py-4 text-sm text-sky-900 lg:table-cell">{{ city.temperature }} ºC</td>
+            <td class="hidden pl-36 py-4 text-sm text-sky-900 lg:table-cell">{{ city.temperature }} ºC</td>
           </tr>
           </tbody>
         </table>
@@ -31,21 +31,22 @@
 </template>
 
 <script setup>
-  import {computed, ref} from "vue";
+  import { ref, computed, watch } from 'vue';
+  import axios from 'axios';
 
-  const cities = [
-      {id:'2267056', name: 'Lisboa', temperature: ''},
-      {id:'2267094', name: 'Leiria', temperature: ''},
-      {id:'2740636', name: 'Coimbra', temperature: ''},
-      {id:'2735941', name: 'Porto', temperature: ''},
-      {id:'2268337', name: 'Faro', temperature: ''},
-    ]
+  const cities = ref([
+    { id: '2267056', name: 'Lisboa', temperature: '' },
+    { id: '2267094', name: 'Leiria', temperature: '' },
+    { id: '2740636', name: 'Coimbra', temperature: '' },
+    { id: '2735941', name: 'Porto', temperature: '' },
+    { id: '2268337', name: 'Faro', temperature: '' },
+  ]);
 
-  const currentTime = ref(new Date())
+  const currentTime = ref(new Date());
 
   setInterval(() => {
     currentTime.value = new Date();
-  }, 30 * 60 * 1000); // update every 30 minutes
+  }, 30 * 60 * 1000);
 
   const formattedDateTime = computed(() => {
     const options = {
@@ -55,7 +56,21 @@
       hour: 'numeric',
       minute: 'numeric',
       hour12: false,
+    };
+    return currentTime.value.toLocaleString('en-US', options);
+  });
+
+  watch(cities, async (tempCities) => {
+    try {
+      const promises = tempCities.map((city) =>
+          axios.get(`http://127.0.0.1:3333/api/forecast/${city.id}`)
+      );
+      const responses = await Promise.all(promises);
+      responses.forEach((response, index) => {
+        tempCities[index].temperature = response.data[0].temperature;
+      });
+    } catch (error) {
+      console.error(error);
     }
-    return currentTime.value.toLocaleString('en-US', options)
-  })
+  }, { immediate: true });
 </script>

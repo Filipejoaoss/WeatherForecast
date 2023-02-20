@@ -14,18 +14,6 @@
             </div>
           </div>
 
-          <div class="flex flex-1 items-center justify-center">
-            <div class="w-full max-w-lg lg:max-w-xs">
-              <label for="search" class="sr-only">Search</label>
-              <div class="relative">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <MagnifyingGlassIcon class="h-5 w-5 text-sky-900" aria-hidden="true" />
-                </div>
-                <input id="search" name="search" class="block w-full rounded-md border border-sky-900 bg-white py-2 pl-10 pr-3 leading-5 placeholder-sky-900 focus:border-sky-900 focus:placeholder-sky-900 focus:outline-none focus:ring-1 focus:ring-sky-900 sm:text-sm" placeholder="Search" type="search" />
-              </div>
-            </div>
-          </div>
-
           <div class="hidden lg:ml-4 lg:flex lg:items-center justify-end">
             <router-link to="/Register">
               <button type="button" class="inline-flex items-center rounded-md border border-transparent bg-sky-900 px-4 py-2  text-sm font-medium text-white shadow-sm hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:ring-offset-2 mr-2">Register</button>
