@@ -4,28 +4,29 @@ import { rules, schema } from '@ioc:Adonis/Core/Validator'
 
 export default class AuthController {
   //Register
-  public async register({request, response}: HttpContextContract){
-
+  public async register({ request, response, auth }: HttpContextContract) {
     try {
       const validations = await schema.create({
         name: schema.string({}, [rules.required()]),
-        email: schema.string({}, [rules.email(), rules.required(), rules.regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/), rules.unique({table: 'users', column: 'email'})]),
-        password: schema.string({}, [rules.required(), rules.confirmed()])
+        email: schema.string({}, [rules.email(), rules.required(), rules.unique({ table: 'users', column: 'email' })]),
+        password: schema.string({}, [rules.required(), rules.confirmed()]),
       })
 
-      const data = await request.validate({schema: validations})
+      const data = await request.validate({ schema: validations })
       const user = await User.create(data)
 
-      return response.created(user)
+      const token = await auth.use('api').generate(user)
+
+      return response.status(201).json({ user, token })
     } catch (error) {
-      if (error.messsages) {
+      if (error.messages) {
         return response.status(422).json({ errors: error.messages })
       }
     }
   }
 
   //Login
-  public async login({ request, response, auth }: HttpContextContract) {
+  static async login({ request, response, auth }: HttpContextContract) {
     const email = await request.input('email')
     const password = await request.input('password')
 
@@ -51,7 +52,7 @@ export default class AuthController {
     }
   }
 
-  public async logout({ auth, response }: HttpContextContract) {
+  static async logout({ auth, response }: HttpContextContract) {
     try {
       await auth.logout()
       return response.status(200).send({ message: 'Logout successful' })
