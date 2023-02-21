@@ -12,7 +12,7 @@ Make a copy of .env.example and rename it as .env and configure it.
 WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast"
 WEATHER_API_KEY=
 
-PORT=3333
+PORT=8080
 HOST=0.0.0.0
 NODE_ENV=development
 APP_KEY=yCO5rpclEH0LrRGZNxWnA_EynxozHWNm
