@@ -7,7 +7,7 @@
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-xl font-bold text-sky-900">Forecasts</h1>
-          <p class="mt-2 text-sm font-semibold text-sky-900">Weather Forecast for {{ formattedDateTime }}.</p>
+          <p class="mt-2 text-sm font-semibold text-sky-900">Weather Forecast for {{ updateTime }}.</p>
         </div>
       </div>
       <div class="-mx-6 mt-8 sm:-mx-0">
@@ -31,8 +31,10 @@
 </template>
 
 <script setup>
-  import { ref, computed, watch } from 'vue';
-  import axios from 'axios';
+  import { ref, computed, watch } from 'vue'
+  import axios from 'axios'
+
+  const baseUrl = import.meta.env.VITE_BASE_URL
 
   const cities = ref([
     { id: '2267056', name: 'Lisboa', temperature: '' },
@@ -42,13 +44,14 @@
     { id: '2268337', name: 'Faro', temperature: '' },
   ]);
 
-  const currentTime = ref(new Date());
+  //Get the time when the page is open
+  const currentTime = ref(new Date())
 
   setInterval(() => {
-    currentTime.value = new Date();
-  }, 30 * 60 * 1000);
+    currentTime.value = new Date()
+  }, 30 * 60 * 1000)
 
-  const formattedDateTime = computed(() => {
+  const updateTime = computed(() => {
     const options = {
       day: 'numeric',
       month: 'long',
@@ -56,21 +59,22 @@
       hour: 'numeric',
       minute: 'numeric',
       hour12: true,
-    };
-    return currentTime.value.toLocaleString('en-US', options);
-  });
+    }
+    return currentTime.value.toLocaleString('en-US', options)
+  })
 
+  //GET method to get the temperature of different cities
   watch(cities, async (tempCities) => {
     try {
       const promises = tempCities.map((city) =>
-          axios.get(`http://127.0.0.1:8080/api/forecast/${city.id}`)
-      );
-      const responses = await Promise.all(promises);
+          axios.get(`${baseUrl}/api/forecast/${city.id}`)
+      )
+      const responses = await Promise.all(promises)
       responses.forEach((response, index) => {
-        tempCities[index].temperature = response.data[0].temperature;
-      });
+        tempCities[index].temperature = response.data[0].temperature
+      })
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  }, { immediate: true });
+  }, { immediate: true })
 </script>

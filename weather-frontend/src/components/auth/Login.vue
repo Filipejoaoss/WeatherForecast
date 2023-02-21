@@ -39,12 +39,23 @@
   import { useStore } from "vuex"
 
   const toast = inject('toast')
+
   const credentials = ref({
     email: '',
     password: ''
   })
 
   const store = useStore()
+
+  //After 30 min the Session is expired
+  const addCookieTimer = () => {
+    const timeout = setTimeout(function(){
+      store.dispatch('logout')
+      router.push({ name: 'Homepage' })
+      toast.error('Session expired')
+    }, 30 * 60 * 1000)
+    sessionStorage.setItem('timer', timeout)
+  }
 
   const login = async (event) => {
     event.preventDefault()
@@ -53,6 +64,7 @@
       await store.dispatch('login', credentials.value)
       toast.success('Welcome to Weather Forecast')
       router.push({ name: 'HomePage' })
+      addCookieTimer()
     } catch (error) {
       toast.error('Invalid Credentials')
     }

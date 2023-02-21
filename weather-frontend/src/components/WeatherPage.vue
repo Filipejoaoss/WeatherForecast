@@ -99,6 +99,7 @@ import {computed, ref, watch} from 'vue'
 
   const selected = ref(cities[1])
 
+  //Get the time when the page is open
   const currentTime = ref(new Date())
 
   setInterval(() => {
@@ -117,6 +118,7 @@ import {computed, ref, watch} from 'vue'
     return currentTime.value.toLocaleString('en-US', options)
   })
 
+  //GET method to get the information about the selected city
   const forecast = ref({
     temperature: '',
     temperature_max: '',

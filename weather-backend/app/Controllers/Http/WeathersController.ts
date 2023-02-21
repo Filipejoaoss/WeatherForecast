@@ -3,6 +3,7 @@ import axios from 'axios'
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 
 export default class WeathersController {
+  //Get the forecast by ID
   static async getForecastById({ request, response }: HttpContextContract) {
     let data = null
 

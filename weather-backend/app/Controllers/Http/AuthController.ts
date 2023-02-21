@@ -45,6 +45,7 @@ export default class AuthController {
     return response.json(token)
   }
 
+  //Logout
   static async logout ({ auth, response }: HttpContextContract) {
     try {
       await auth.logout()
