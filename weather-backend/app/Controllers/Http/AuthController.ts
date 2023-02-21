@@ -14,14 +14,12 @@ export default class AuthController {
       })
 
       const data = await request.validate({ schema: validations })
-
       const user = await User.create(data)
-
       const token = await auth.use('api').generate(user)
 
       return response.status(201).json({ user, token })
     } catch (error) {
-        return response.status(422).json({ errors: error })
+        return response.status(422).json({ error: error })
     }
   }
 

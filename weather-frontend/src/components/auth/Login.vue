@@ -9,7 +9,7 @@
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <form class="space-y-6" @submit="handleSubmit">
+        <form class="space-y-6" @submit="login">
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
             <div class="mt-1">
@@ -35,34 +35,26 @@
 
 <script setup>
   import router from "../../router/index.js"
-  import {ref} from "vue"
-  import axios from "axios"
-  import {useStore} from "vuex"
+  import {inject, ref} from "vue"
+  import { useStore } from "vuex"
 
-  const baseUrl = import.meta.env.VITE_BASE_URL
-  const store = useStore()
+  const toast = inject('toast')
   const credentials = ref({
     email: '',
     password: ''
   })
 
-  const handleSubmit = async (event) => {
+  const store = useStore()
+
+  const login = async (event) => {
     event.preventDefault()
 
     try {
-      const response = await axios.post(`${baseUrl}/api/login`, {
-        email: credentials.value.email,
-        password: credentials.value.password
-      })
-
-      if (response.status === 200) {
-        store.commit('login')
-        router.push({name: 'HomePage'})
-      } else {
-        alert('Invalid email or password')
-      }
+      await store.dispatch('login', credentials.value)
+      toast.success('Welcome to Weather Forecast')
+      router.push({ name: 'HomePage' })
     } catch (error) {
-        alert('Failed to login. Please try again later.')
+      toast.error('Invalid Credentials')
     }
   }
 </script>

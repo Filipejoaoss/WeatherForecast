@@ -48,17 +48,17 @@
   import { Disclosure } from '@headlessui/vue'
   import { RouterLink } from 'vue-router'
   import { useStore } from 'vuex'
-  import {computed} from "vue"
+  import {computed, inject} from "vue"
   import router from "./router/index.js"
 
+  const toast = inject('toast')
   const store = useStore()
   const isLoggedIn = computed(() => store.state.isLoggedIn)
 
   const logout = () => {
     store.dispatch('logout')
         .then(() => {
-          // redirect to login page after successful logout
-          router.push('/Login')
+          toast.success('You have successfully logged out!')
         })
   }
 </script>

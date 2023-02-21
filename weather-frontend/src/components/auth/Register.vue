@@ -49,10 +49,11 @@
 
 <script setup>
   import axios from "axios"
-  import {ref} from "vue"
+  import {inject, ref} from "vue"
+  import router from "../../router/index.js";
 
   const baseUrl = import.meta.env.VITE_BASE_URL
-
+  const toast = inject('toast')
   const credentials = ref({
     name: '',
     email: '',
@@ -64,6 +65,11 @@
     event.preventDefault()
 
     try {
+      if (credentials.value.password !== credentials.value.password_confirmation) {
+        toast.error('The password and the Password Confirmation don´t match')
+        return
+      }
+
       const response = await axios.post(`${baseUrl}/api/register`, {
         name: credentials.value.name,
         email: credentials.value.email,
@@ -71,16 +77,16 @@
         password_confirmation: credentials.value.password_confirmation
       })
 
-      if (credentials.value.password !== credentials.value.password_confirmation){
-        alert('Invalid Password')
-      }
       if (response.status === 201) {
-        alert('User create successful')
-      } else {
-        alert('Invalid credentials')
+        toast.success('User created successfully!')
+        router.push({ name: 'HomePage' })
       }
     } catch (error) {
-      alert('Failed to register. Please try again later.')
+      if (error.response && error.response.status === 422 && error.response.data.error === 'Invalid email') {
+        toast.error('Invalid email!')
+      } else {
+        toast.error('An error occurred')
+      }
     }
   }
 </script>
