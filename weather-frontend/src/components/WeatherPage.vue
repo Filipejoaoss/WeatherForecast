@@ -111,7 +111,7 @@ import {computed, ref, watch} from 'vue'
       year: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
-      hour12: false,
+      hour12: true,
     }
     return currentTime.value.toLocaleString('en-US', options)
   })
@@ -130,7 +130,7 @@ import {computed, ref, watch} from 'vue'
 
   watch(() => selected.value, async (newVal) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:3333/api/forecast/${newVal.id}`);
+      const response = await axios.get(`http://127.0.0.1:8080/api/forecast/${newVal.id}`);
       forecast.value = response.data[0];
     } catch (error) {
       console.error(error);

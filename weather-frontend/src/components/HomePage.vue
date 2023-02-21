@@ -55,7 +55,7 @@
       year: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
-      hour12: false,
+      hour12: true,
     };
     return currentTime.value.toLocaleString('en-US', options);
   });
@@ -63,7 +63,7 @@
   watch(cities, async (tempCities) => {
     try {
       const promises = tempCities.map((city) =>
-          axios.get(`http://127.0.0.1:3333/api/forecast/${city.id}`)
+          axios.get(`http://127.0.0.1:8080/api/forecast/${city.id}`)
       );
       const responses = await Promise.all(promises);
       responses.forEach((response, index) => {
