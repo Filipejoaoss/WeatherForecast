@@ -51,17 +51,20 @@
   import axios from "axios"
   import {ref} from "vue"
 
+  const baseUrl = import.meta.env.VITE_BASE_URL
+
   const credentials = ref({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
   })
+
   const handleSubmit = async (event) => {
     event.preventDefault()
 
     try {
-      const response = await axios.post('http://127.0.0.1:8080/api/register', {
+      const response = await axios.post(`${baseUrl}/api/register`, {
         name: credentials.value.name,
         email: credentials.value.email,
         password: credentials.value.password,

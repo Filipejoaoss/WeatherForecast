@@ -5,7 +5,6 @@ import store from "./store/index.js";
 
 import './style.css'
 
-
 const app = createApp(App)
 
 app.use(router)

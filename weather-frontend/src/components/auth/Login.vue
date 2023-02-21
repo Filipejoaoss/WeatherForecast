@@ -39,8 +39,8 @@
   import axios from "axios"
   import {useStore} from "vuex"
 
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const store = useStore()
-
   const credentials = ref({
     email: '',
     password: ''
@@ -50,7 +50,7 @@
     event.preventDefault()
 
     try {
-      const response = await axios.post('http://127.0.0.1:8080/api/login', {
+      const response = await axios.post(`${baseUrl}/api/login`, {
         email: credentials.value.email,
         password: credentials.value.password
       })

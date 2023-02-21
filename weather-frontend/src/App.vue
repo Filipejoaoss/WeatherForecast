@@ -52,7 +52,6 @@
   import router from "./router/index.js"
 
   const store = useStore()
-
   const isLoggedIn = computed(() => store.state.isLoggedIn)
 
   const logout = () => {

@@ -88,6 +88,7 @@ import {computed, ref, watch} from 'vue'
   import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
   import axios from "axios";
 
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const cities = [
     {id:'2267056', name: 'Lisboa'},
     {id:'2267094', name: 'Leiria'},
@@ -130,7 +131,7 @@ import {computed, ref, watch} from 'vue'
 
   watch(() => selected.value, async (newVal) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8080/api/forecast/${newVal.id}`);
+      const response = await axios.get(`${baseUrl}/api/forecast/${newVal.id}`);
       forecast.value = response.data[0];
     } catch (error) {
       console.error(error);
