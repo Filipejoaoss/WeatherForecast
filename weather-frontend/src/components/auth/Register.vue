@@ -9,32 +9,32 @@
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" @submit="handleSubmit">
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
             <div class="mt-1">
-              <input id="name" name="mane" type="name" required="" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-900 focus:outline-none focus:ring-sky-900 sm:text-sm" />
+              <input id="name" name="mane" type="name" v-model="credentials.name" required="" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-900 focus:outline-none focus:ring-sky-900 sm:text-sm" />
             </div>
           </div>
 
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
             <div class="mt-1">
-              <input id="email" name="email" type="email" autocomplete="email" required="" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-900 focus:outline-none focus:ring-sky-900 sm:text-sm" />
+              <input id="email" name="email" type="email" autocomplete="email" v-model="credentials.email" required="" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-900 focus:outline-none focus:ring-sky-900 sm:text-sm" />
             </div>
           </div>
 
           <div>
             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
             <div class="mt-1">
-              <input id="password" name="password" type="password" autocomplete="current-password" required="" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-900 focus:outline-none focus:ring-sky-900 sm:text-sm" />
+              <input id="password" name="password" type="password" autocomplete="current-password" v-model="credentials.password" required="" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-900 focus:outline-none focus:ring-sky-900 sm:text-sm" />
             </div>
           </div>
 
           <div>
             <label for="password" class="block text-sm font-medium text-gray-700">Password Confirmation</label>
             <div class="mt-1">
-              <input id="password" name="password" type="password" autocomplete="current-password" required="" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-900 focus:outline-none focus:ring-sky-900 sm:text-sm" />
+              <input id="password" name="password" type="password" autocomplete="current-password" v-model="credentials.password_confirmation" required="" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-900 focus:outline-none focus:ring-sky-900 sm:text-sm" />
             </div>
           </div>
 
@@ -47,12 +47,37 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "LoginPage"
-}
+<script setup>
+  import axios from "axios"
+  import {ref} from "vue"
+
+  const credentials = ref({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+  })
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8080/api/register', {
+        name: credentials.value.name,
+        email: credentials.value.email,
+        password: credentials.value.password,
+        password_confirmation: credentials.value.password_confirmation
+      })
+
+      if (credentials.value.password !== credentials.value.password_confirmation){
+        alert('Invalid Password')
+      }
+      if (response.status === 201) {
+        alert('User create successful')
+      } else {
+        alert('Invalid credentials')
+      }
+    } catch (error) {
+      alert('Failed to register. Please try again later.')
+    }
+  }
 </script>
-
-<style scoped>
-
-</style>

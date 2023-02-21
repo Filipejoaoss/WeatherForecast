@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import AuthController from 'App/Controllers/Http/AuthController'
 import WeathersController from 'App/Controllers/Http/WeathersController'
 
 Route.get('/', async () => {
@@ -26,8 +27,8 @@ Route.get('/', async () => {
 })
 
 Route.group(() => {
-  Route.post('/register', 'AuthController.register')
-  Route.post('/login', 'AuthController.login')
-  Route.post('/logout','AuthController.logout')
+  Route.post('/register', AuthController.register).middleware(['cors'])
+  Route.post('/login', AuthController.login).middleware(['cors'])
+  Route.post('/logout',AuthController.logout).middleware(['cors'])
   Route.get('/forecast/:location', WeathersController.getForecastById).middleware(['cors'])
 }).prefix('api')

@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 
 export default class AuthController {
   //Register
-  public async register({ request, response, auth }: HttpContextContract) {
+  static async register({ request, response, auth }: HttpContextContract) {
     try {
       const validations = await schema.create({
         name: schema.string({}, [rules.required()]),
@@ -26,7 +26,7 @@ export default class AuthController {
   }
 
   //Login
-  public async login({ auth, request, response }: HttpContextContract) {
+  static async login({ auth, request, response }: HttpContextContract) {
     const email = request.input('email')
     const password = request.input('password')
 
@@ -47,7 +47,7 @@ export default class AuthController {
     return response.json(token)
   }
 
-  public async logout ({ auth, response }: HttpContextContract) {
+  static async logout ({ auth, response }: HttpContextContract) {
     try {
       await auth.logout()
       return response.status(200).send({ message: 'Logout successful' })

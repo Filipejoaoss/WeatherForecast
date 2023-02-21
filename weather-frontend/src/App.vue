@@ -9,17 +9,23 @@
               <router-link to="/" class="font-bold text-sky-900">Weather Forecast</router-link>
             </div>
 
-            <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
+            <div v-show="isLoggedIn" class="hidden lg:ml-6 lg:flex lg:space-x-8">
               <router-link to="/Weather" class="inline-flex items-center border-b-2 border-sky-900 px-1 pt-1 text-sm font-medium text-sky-900">Weather</router-link>
             </div>
           </div>
 
-          <div class="hidden lg:ml-4 lg:flex lg:items-center justify-end">
+          <div v-show="!isLoggedIn" class="hidden lg:ml-4 lg:flex lg:items-center justify-end">
             <router-link to="/Register">
               <button type="button" class="inline-flex items-center rounded-md border border-transparent bg-sky-900 px-4 py-2  text-sm font-medium text-white shadow-sm hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:ring-offset-2 mr-2">Register</button>
             </router-link>
             <router-link to="/Login">
               <button type="button" class="inline-flex items-center rounded-md border border-transparent bg-sky-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:ring-offset-2 mr-2">Log In</button>
+            </router-link>
+          </div>
+
+          <div v-show="isLoggedIn" class="hidden lg:ml-4 lg:flex lg:items-center justify-end">
+            <router-link to="/">
+              <button @click="logout" type="button" class="inline-flex items-center rounded-md border border-transparent bg-sky-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-900 focus:ring-offset-2 mr-2">Log Out</button>
             </router-link>
           </div>
         </div>
@@ -39,8 +45,21 @@
 </template>
 
 <script setup>
-  import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-  import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
-
+  import { Disclosure } from '@headlessui/vue'
   import { RouterLink } from 'vue-router'
+  import { useStore } from 'vuex'
+  import {computed} from "vue"
+  import router from "./router/index.js"
+
+  const store = useStore()
+
+  const isLoggedIn = computed(() => store.state.isLoggedIn)
+
+  const logout = () => {
+    store.dispatch('logout')
+        .then(() => {
+          // redirect to login page after successful logout
+          router.push('/Login')
+        })
+  }
 </script>
