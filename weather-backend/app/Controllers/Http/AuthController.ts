@@ -33,13 +33,13 @@ export default class AuthController {
     const user = await User.findBy('email', email)
 
     if (!user) {
-      return response.badRequest({ message: 'Invalid credentials' })
+      return response.badRequest({ message: 'User does not exist' })
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
     if (!isPasswordValid) {
-      return response.badRequest({ message: 'Invalid credentials' })
+      return response.badRequest({ message: 'Invalid password' })
     }
 
     const token = await auth.use('api').generate(user)
