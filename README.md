@@ -2,7 +2,7 @@
 
 Small fullstack project that uses OpenWeather API to display weather information  of cities Lisboa, Leiria, Coimbra, Porto and Faro.
 
-The Technologies used for this project was adonis.js, web framework for node.js, MySQL, Redis and Vue.
+The technologies used for this project were Adonis.js, a web framework for Node.js, MySQL, Redis, Vue, and Tailwind CSS.
 
 ## Backend configuration
 
